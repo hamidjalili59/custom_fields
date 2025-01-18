@@ -13,6 +13,8 @@ class CharacterInputFields extends StatefulWidget {
   final TextStyle? style;
   final InputBorder? errorBorder;
   final InputBorder? Function(bool)? border;
+  final Future<void> Function() onTypeWrong;
+  final Future<void> Function() onTypeCorrect;
 
   const CharacterInputFields({
     super.key,
@@ -25,6 +27,8 @@ class CharacterInputFields extends StatefulWidget {
     this.style,
     this.errorBorder,
     this.border,
+    required this.onTypeWrong,
+    required this.onTypeCorrect,
   });
 
   @override
@@ -134,10 +138,19 @@ class CharacterInputFieldsState extends State<CharacterInputFields> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     setState(() {
                       widget.wordModel.updateCharacter(index, value);
                     });
+                    if (value.toLowerCase() ==
+                            widget.wordModel.word[index].toLowerCase() &&
+                        value.isNotEmpty) {
+                      await widget.onTypeCorrect.call();
+                    } else if (value.toLowerCase() !=
+                            widget.wordModel.word[index].toLowerCase() &&
+                        value.isNotEmpty) {
+                      await widget.onTypeWrong.call();
+                    }
                     if (value.isEmpty) {
                       setState(() {
                         errorsText[index] = null;

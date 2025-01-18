@@ -52,9 +52,11 @@ packages:
   custom_fields:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: ae1be08a908fae381b31700cadabfba7a1c9bac2
+      url: "git@github.com:hamidjalili59/custom_fields.git"
+    source: git
     version: "0.0.1"
   fake_async:
     dependency: transitive
